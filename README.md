@@ -1,113 +1,393 @@
-# Desafio Tetris Stack - Controle de Peças com Estruturas de Dados
 
-Bem-vindo ao desafio **"Tetris Stack"**! Neste jogo inspirado nas mecânicas clássicas de montagem de peças, o jogador deve organizar, reservar e manipular peças em tempo real. Para isso, você, como programador, será responsável por implementar as estruturas de controle que regem a lógica das peças.
+                     🎮 TETRIS STACK - NÍVEL NOVATO 🎮
+                    Sistema de Gerenciamento de Peças
 
-A empresa **ByteBros**, especializada em jogos educacionais de lógica e programação, contratou você para desenvolver o sistema de gerenciamento de peças, utilizando estruturas como **fila circular** e **pilha**.
+📋 DESCRIÇÃO DO PROJETO
+------------------------
+Sistema de gerenciamento de peças inspirado no Tetris, desenvolvido como 
+desafio educacional pela ByteBros. Implementa uma fila circular para controlar
+as próximas 5 peças do jogo.
 
-O desafio está dividido em três níveis: **Novato**, **Aventureiro** e **Mestre**, com cada nível adicionando mais complexidade ao anterior.  
-**Você deve escolher qual desafio deseja realizar.**
+🎯 OBJETIVO
+-----------
+Simular uma fila circular de 5 peças com funcionalidades de:
+  • Visualizar fila atual
+  • Jogar (remover) peça da frente
+  • Inserir nova peça no final
+  • Manter fila circular reaproveitando espaço
 
-🚨 **Atenção:** O nível Novato foca apenas na fila de peças, usando conceitos básicos de structs, arrays e modularização.
+🏗️ ESTRUTURAS DE DADOS
 
-## 🎮 Nível Novato: Fila de Peças Futuras
 
-No nível Novato, você criará o sistema inicial de controle das peças futuras do jogo Tetris Stack. As peças possuem um **nome** (representando o tipo, como 'I', 'O', 'T', 'L') e um **id** exclusivo (identificador numérico).
+// Representa uma peça do Tetris
+typedef struct {
+    char nome;  // Tipo: I, O, T, L, J, S, Z
+    int id;     // Identificador único
+} Peca;
 
-🚩 **Objetivo:** Criar um programa em C que simula uma **fila circular** de 5 peças com as seguintes funcionalidades:
+// Controla a fila circular
+typedef struct {
+    Peca pecas[5];
+    int frente;
+    int tras;
+    int quantidade;
+} FilaCircular;
 
-*   Visualizar a fila atual
-*   Jogar (remover) a peça da frente
-*   Inserir automaticamente uma nova peça no final da fila
+/*
+🎲 TIPOS DE PEÇAS
+-----------------
+O sistema trabalha com 7 tipos clássicos de peças do Tetris:
+  • I - Barra reta (4 blocos em linha)
+  • O - Quadrado (2x2 blocos)
+  • T - Forma de T
+  • L - L normal
+  • J - L invertido
+  • S - Zigue-zague S
+  • Z - Zigue-zague Z
 
-⚙️ **Funcionalidades do Sistema:**
+Cada peça recebe um ID único sequencial para rastreamento individual.
 
-*   Inicializar a fila com 5 peças geradas automaticamente.
-*   Permitir que o usuário:
-    *   Jogue uma peça (dequeue)
-    *   Insira uma nova peça (enqueue)
-    *   Visualize o estado atual da fila
-*   Manter a fila circular, reaproveitando o espaço.
+🔄 FUNCIONAMENTO DA FILA CIRCULAR
+----------------------------------
+A fila circular utiliza a operação módulo (%) para reaproveitar espaços:
+  1. Enqueue (Inserir): tras = (tras + 1) % 5
+  2. Dequeue (Remover): frente = (frente + 1) % 5
 
-📥 **Entrada** e 📤 **Saída de Dados:**
+Isso permite que, ao remover uma peça da frente, o espaço liberado possa ser
+reutilizado quando uma nova peça for adicionada, mantendo sempre até 5 peças.
 
-*   O programa utiliza menus via terminal.
-*   A cada ação, o estado atualizado da fila é exibido com `printf`.
+🛡️ CONTROLES E VALIDAÇÕES
+--------------------------
+O sistema implementa verificações robustas:
+  ✅ Verifica se a fila está cheia antes de inserir
+  ✅ Verifica se a fila está vazia antes de remover
+  ✅ Valida entradas do usuário no menu
+  ✅ Exibe mensagens claras de erro e sucesso
+  ✅ Limpa buffer de entrada para evitar comportamentos indesejados
 
-**Simplificações para o Nível Novato:**
+🎨 INTERFACE DO USUÁRIO
+-----------------------
+O programa oferece uma interface textual clara e organizada:
 
-*   Trabalhe **apenas com a fila**.
-*   A fila deve conter **exatamente 5 elementos**.
-*   Use uma função `gerarPeca()` para criar automaticamente novas peças.
-*   Utilize structs e arrays. Não implemente pilha.
+===========================================
+   BEM-VINDO AO TETRIS STACK - NIVEL NOVATO
+===========================================
 
-## 🛡️ Nível Aventureiro: Reserva de Peças com Pilha
+Fila inicializada com 5 pecas!
 
-No nível Aventureiro, você irá expandir o sistema com uma **pilha de reserva de peças**, que permite ao jogador guardar peças para uso posterior.
+             MENU PRINCIPAL 
+  [1] Visualizar fila de pecas
+  [2] Jogar peca (remover da frente)
+  [3] Adicionar nova peca (no final)
+  [0] Sair do jogo
+-------------------------------------------
 
-🆕 **Diferença em relação ao Nível Novato:**
+Após cada operação, o estado atualizado da fila é exibido automaticamente,
+mostrando:
+  • Quantidade de peças atual
+  • Posição de cada peça (destacando a próxima a ser jogada)
+  • Tipo e ID de cada peça
 
-*   Introdução da **pilha linear** para reservar peças.
-*   A fila permanece sempre cheia com 5 peças.
+💡 CONCEITOS APLICADOS
+----------------------
+  • Fila circular      • Structs personalizadas
+  • Arrays             • Modularização
+  • Validação de dados • Geração aleatória
+  • Interface de menu  • Tratamento de entrada
 
-⚙️ **Funcionalidades do Sistema:**
+🚀 COMPILAÇÃO E EXECUÇÃO
+------------------------
+Compilação:
+  gcc tetris_stack.c -o tetris_stack
 
-*   Além das opções anteriores, o usuário pode:
-    *   Reservar a peça da frente da fila (push)
-    *   Usar uma peça reservada (pop)
-*   A fila continua funcionando com inserção automática.
-*   A pilha tem **capacidade máxima de 3 peças**.
+Execução:
+  ./tetris_stack
 
-📥 **Entrada** e 📤 **Saída de Dados:**
+📊 FLUXO DE EXECUÇÃO
+--------------------
+  1. Sistema inicializa fila com 5 peças aleatórias
+  2. Exibe menu de opções ao usuário
+  3. Usuário escolhe ação (visualizar, jogar, adicionar, sair)
+  4. Sistema valida operação e executa
+  5. Exibe feedback e estado atualizado
+  6. Retorna ao menu até usuário sair
 
-*   Menu com 4 opções:
-    * `1` - Jogar peça
-    * `2` - Reservar peça
-    * `3` - Usar peça reservada
-    * `0` - Sair
-*   O estado da fila e da pilha é exibido após cada ação.
+🎓 APRENDIZADOS
+---------------
+Este projeto exercita:
+  ✓ Implementação de fila circular com array
+  ✓ Uso de structs para organização de dados
+  ✓ Modularização através de funções especializadas
+  ✓ Validação robusta de operações
+  ✓ Interface de usuário clara e intuitiva
 
-**Simplificações para o Nível Intermediário:**
+🚀 PRÓXIMOS NÍVEIS
+------------------
+  • Aventureiro: Adicionar pilha de reserva (3 peças)
+  • Mestre: Operações avançadas (troca, inversão, desfazer)
 
-*   A pilha não permite escolha da posição.
-*   O jogador **não escolhe o tipo da peça** — todas são geradas automaticamente.
-*   Não há comparação nem troca direta entre as estruturas.
+================================================================================
+*/
 
-## 🏆 Nível Mestre: Integração Total com Estratégia
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
-No nível Mestre, você implementará uma **integração complexa** entre a fila e a pilha, simulando funcionalidades avançadas como **troca**, **desfazer** e **inversão de peças**.
+#define TAMANHO_FILA 5
 
-🆕 **Diferença em relação ao Nível Aventureiro:**
+// ============================================================================
+// VARIÁVEIS GLOBAIS
+// ============================================================================
 
-*   Operações mais complexas e estratégicas entre as estruturas.
-*   Manipulação reversível do estado das peças.
+int contadorId = 1;  // Contador para gerar IDs únicos
 
-⚙️ **Funcionalidades do Sistema:**
+// ============================================================================
+// PROTÓTIPOS DAS FUNÇÕES
+// ============================================================================
 
-*   Menu com múltiplas ações:
-    * `1` - Jogar peça
-    * `2` - Reservar peça
-    * `3` - Usar peça reservada
-    * `4` - Trocar peça do topo da pilha com a da frente da fila
-    * `5` - Desfazer última jogada
-    * `6` - Inverter fila com pilha
-    * `0` - Sair
-*   Controle de fila circular e pilha de reserva com atualização a cada ação.
+void inicializarFila(FilaCircular *fila);
+Peca gerarPeca();
+int filaCheia(FilaCircular *fila);
+int filaVazia(FilaCircular *fila);
+void enqueue(FilaCircular *fila, Peca peca);
+Peca dequeue(FilaCircular *fila);
+void visualizarFila(FilaCircular *fila);
+void exibirMenu();
+void limparBuffer();
 
-📥 **Entrada** e 📤 **Saída de Dados:**
+// ============================================================================
+// FUNÇÃO PRINCIPAL
+// ============================================================================
 
-*   Mesmo estilo dos níveis anteriores.
-*   Agora exige controle total do fluxo e da memória entre as estruturas.
+int main() {
+    FilaCircular fila;
+    int opcao;
+    
+    srand(time(NULL));
+    
+    printf("===========================================\n");
+    printf("   BEM-VINDO AO TETRIS STACK - NIVEL NOVATO\n");
+    printf("===========================================\n\n");
+    
+    inicializarFila(&fila);
+    printf("Fila inicializada com 5 pecas!\n\n");
+    visualizarFila(&fila);
+    
+    do {
+        exibirMenu();
+        printf("Escolha uma opcao: ");
+        
+        if (scanf("%d", &opcao) != 1) {
+            limparBuffer();
+            printf("\n[ERRO] Entrada invalida! Digite um numero.\n\n");
+            continue;
+        }
+        limparBuffer();
+        printf("\n");
+        
+        switch(opcao) {
+            case 1:
+                visualizarFila(&fila);
+                break;
+                
+            case 2: {
+                if (filaVazia(&fila)) {
+                    printf("[AVISO] A fila esta vazia! Nao ha pecas para jogar.\n\n");
+                } else {
+                    Peca pecaJogada = dequeue(&fila);
+                    printf(">>> PECA JOGADA <<<\n");
+                    printf("Tipo: %c | ID: %d\n\n", pecaJogada.nome, pecaJogada.id);
+                    visualizarFila(&fila);
+                }
+                break;
+            }
+                
+            case 3: {
+                if (filaCheia(&fila)) {
+                    printf("[AVISO] A fila esta cheia! Nao e possivel adicionar mais pecas.\n\n");
+                } else {
+                    Peca novaPeca = gerarPeca();
+                    enqueue(&fila, novaPeca);
+                    printf(">>> NOVA PECA ADICIONADA <<<\n");
+                    printf("Tipo: %c | ID: %d\n\n", novaPeca.nome, novaPeca.id);
+                    visualizarFila(&fila);
+                }
+                break;
+            }
+                
+            case 0:
+                printf("===========================================\n");
+                printf("   Obrigado por jogar Tetris Stack!\n");
+                printf("   Ate a proxima, jogador!\n");
+                printf("===========================================\n");
+                break;
+                
+            default:
+                printf("[ERRO] Opcao invalida! Tente novamente.\n\n");
+        }
+        
+    } while(opcao != 0);
+    
+    return 0;
+}
 
-**Observações:**
+// ============================================================================
+// IMPLEMENTAÇÃO DAS FUNÇÕES
+// ============================================================================
 
-*   Cada operação deve ser segura e manter a integridade dos dados.
-*   A complexidade exige modularização clara e funções bem separadas.
+/*
+ * inicializarFila
+ * ---------------
+ * Inicializa a fila com 5 peças geradas automaticamente
+ */
+void inicializarFila(FilaCircular *fila) {
+    fila->frente = 0;
+    fila->tras = -1;
+    fila->quantidade = 0;
+    
+    for (int i = 0; i < TAMANHO_FILA; i++) {
+        Peca novaPeca = gerarPeca();
+        enqueue(fila, novaPeca);
+    }
+}
 
-## 🏁 Conclusão
+/*
+ * gerarPeca
+ * ---------
+ * Gera uma peça aleatória com ID único
+ */
+Peca gerarPeca() {
+    Peca novaPeca;
+    char tipos[] = {'I', 'O', 'T', 'L', 'J', 'S', 'Z'};
+    int indice = rand() % 7;
+    
+    novaPeca.nome = tipos[indice];
+    novaPeca.id = contadorId++;
+    
+    return novaPeca;
+}
 
-Ao concluir qualquer um dos níveis, você terá exercitado conceitos fundamentais de estrutura de dados, como **fila circular** e **pilha**, em um contexto prático de desenvolvimento de jogos.
+/*
+ * filaCheia
+ * ---------
+ * Verifica se a fila está cheia (5 peças)
+ */
+int filaCheia(FilaCircular *fila) {
+    return fila->quantidade == TAMANHO_FILA;
+}
 
-Boa sorte e divirta-se programando!
+/*
+ * filaVazia
+ * ---------
+ * Verifica se a fila está vazia
+ */
+int filaVazia(FilaCircular *fila) {
+    return fila->quantidade == 0;
+}
 
-Equipe de Ensino - ByteBros
+/*
+ * enqueue
+ * -------
+ * Adiciona peça no final da fila circular
+ */
+void enqueue(FilaCircular *fila, Peca peca) {
+    if (filaCheia(fila)) {
+        printf("[ERRO] Fila cheia! Nao foi possivel adicionar a peca.\n");
+        return;
+    }
+    
+    fila->tras = (fila->tras + 1) % TAMANHO_FILA;
+    fila->pecas[fila->tras] = peca;
+    fila->quantidade++;
+}
 
+/*
+ * dequeue
+ * -------
+ * Remove e retorna peça da frente da fila
+ */
+Peca dequeue(FilaCircular *fila) {
+    Peca pecaRemovida;
+    
+    if (filaVazia(fila)) {
+        printf("[ERRO] Fila vazia! Nao ha pecas para remover.\n");
+        pecaRemovida.nome = '\0';
+        pecaRemovida.id = -1;
+        return pecaRemovida;
+    }
+    
+    pecaRemovida = fila->pecas[fila->frente];
+    fila->frente = (fila->frente + 1) % TAMANHO_FILA;
+    fila->quantidade--;
+    
+    return pecaRemovida;
+}
+
+/*
+ * visualizarFila
+ * --------------
+ * Exibe o estado atual da fila formatado
+ */
+void visualizarFila(FilaCircular *fila) {
+    printf("===========================================\n");
+    printf("        ESTADO ATUAL DA FILA\n");
+    printf("===========================================\n");
+    printf("Pecas na fila: %d/%d\n\n", fila->quantidade, TAMANHO_FILA);
+    
+    if (filaVazia(fila)) {
+        printf("  [VAZIA] Nenhuma peca na fila.\n");
+    } else {
+        printf("  Posicao | Tipo | ID\n");
+        printf("  --------+------+----\n");
+        
+        int pos = fila->frente;
+        for (int i = 0; i < fila->quantidade; i++) {
+            if (i == 0) {
+                printf("  [PROX]  |  %c   | %d\n", 
+                       fila->pecas[pos].nome, 
+                       fila->pecas[pos].id);
+            } else {
+                printf("   %d      |  %c   | %d\n", 
+                       i + 1, 
+                       fila->pecas[pos].nome, 
+                       fila->pecas[pos].id);
+            }
+            pos = (pos + 1) % TAMANHO_FILA;
+        }
+    }
+    
+    printf("===========================================\n\n");
+}
+
+/*
+ * exibirMenu
+ * ----------
+ * Exibe o menu principal com opções disponíveis
+ */
+void exibirMenu() {
+    printf("-------------------------------------------\n");
+    printf("              MENU PRINCIPAL\n");
+    printf("-------------------------------------------\n");
+    printf("  [1] Visualizar fila de pecas\n");
+    printf("  [2] Jogar peca (remover da frente)\n");
+    printf("  [3] Adicionar nova peca (no final)\n");
+    printf("  [0] Sair do jogo\n");
+    printf("-------------------------------------------\n");
+}
+
+/*
+ * limparBuffer
+ * ------------
+ * Limpa o buffer de entrada
+ */
+void limparBuffer() {
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
+}
+
+✅ FIM DO PROGRAMA - TETRIS STACK NÍVEL NOVATO
+
+Desenvolvido por Widardison Sousa
+
+*/
+```
